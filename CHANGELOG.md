@@ -1,5 +1,27 @@
 > This is a high level digest of changes. For the complete CHANGELOG diff two tags in the project's [commit history](https://github.com/berkshelf/berkshelf/commits/master).
 
+# 4.0.1
+
+* Update `berkshelf-api-client` constraint to `~> 2.0`
+
+# 4.0.0
+
+* Drop support for Ruby 1.9
+* Switch from `net_http_client` to `httpclient` Faraday adapter for all HTTP communication
+
+# 3.3.0
+
+* Enhancements
+  * Use [httpclient](https://github.com/nahi/httpclient) in place of Ruby stdlib NetHTTP for http communication
+  * Clarify decompression error messages
+
+# 3.2.4
+
+* Bug Fixes
+  * Fix issue where older version of a cookbook would be presented as the latest available version from a remote API server's cache
+  * Exclude git directories when vendoring
+  * Fix a race condition in downloading cookbooks from Github or a URI location
+
 # 3.2.3
 
 * Bug Fixes
