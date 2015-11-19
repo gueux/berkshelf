@@ -16,7 +16,7 @@ module Berkshelf
         elsif is_tar_file(target)
           Archive::Tar::Minitar.unpack(target, destination)
         else
-          raise Berkshelf::UnknownCompressionType.new(target, destination)
+          raise Berkshelf::UnknownCompressionType.new(target)
         end
 
         FileUtils.rm_rf Dir.glob("#{destination}/**/PaxHeader")
@@ -69,20 +69,21 @@ module Berkshelf
     # @option options [Float] :retry_interval (0.5)
     #   how often we should pause between retries
     def initialize(uri = V1_API, options = {})
-      options         = options.reverse_merge(retries: 5, retry_interval: 0.5, ssl: { verify: Berkshelf::Config.instance.ssl.verify })
+      options         = options.reverse_merge(retries: 5, retry_interval: 0.5)
       @api_uri        = uri
       @retries        = options.delete(:retries)
       @retry_interval = options.delete(:retry_interval)
 
       options[:builder] ||= Faraday::RackBuilder.new do |b|
         b.response :parse_json
+        b.response :gzip
         b.response :follow_redirects
         b.request :retry,
           max: @retries,
           interval: @retry_interval,
           exceptions: [Faraday::Error::TimeoutError]
 
-        b.adapter :httpclient
+        b.adapter :net_http
       end
 
       super(api_uri, options)
@@ -198,7 +199,6 @@ module Berkshelf
         options = {}
         options.merge!(headers)
         options.merge!(open_uri_proxy_options)
-		    options.merge!(ssl_verify_mode: ssl_verify_mode)
       end
 
       def open_uri_proxy_options
@@ -206,14 +206,6 @@ module Berkshelf
           {proxy_http_basic_authentication: [ proxy[:uri], proxy[:user], proxy[:password] ]}
         else
           {}
-        end
-      end
-
-      def ssl_verify_mode
-        if Berkshelf::Config.instance.ssl.verify.nil? || Berkshelf::Config.instance.ssl.verify
-          OpenSSL::SSL::VERIFY_PEER
-        else
-          OpenSSL::SSL::VERIFY_NONE
         end
       end
   end

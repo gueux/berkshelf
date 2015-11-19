@@ -1,8 +1,6 @@
 DEPENDENCIES
   apt (~> 2.0)
   jenkins (~> 2.0)
-  jenkins-config
-    path: ../cookbook-path/jenkins-config
 
 GRAPH
   apt (2.3.6)
@@ -10,9 +8,6 @@ GRAPH
   jenkins (2.0.3)
     apt (~> 2.0)
     runit (~> 1.5)
-    yum (~> 3.0)
-  jenkins-config (0.1.0)
-    jenkins (~> 2.0)
     yum (~> 3.0)
   runit (1.5.8)
     build-essential (>= 0.0.0)

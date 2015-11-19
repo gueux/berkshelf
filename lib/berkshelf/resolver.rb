@@ -1,7 +1,5 @@
 module Berkshelf
   class Resolver
-    Solve.engine = :gecode
-
     require_relative 'resolver/graph'
 
     extend Forwardable

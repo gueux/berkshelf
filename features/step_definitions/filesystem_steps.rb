@@ -5,7 +5,7 @@ World(Berkshelf::RSpec::ChefAPI)
 World(Berkshelf::RSpec::FileSystemMatchers)
 
 Given /^a cookbook named "(.*?)"$/ do |name|
-  create_directory(name)
+  create_dir(name)
   write_file(File.join(name, "metadata.rb"), "name '#{name}'")
 end
 
@@ -24,7 +24,7 @@ Given /^the cookbook store has the git cookbooks:$/ do |cookbooks|
     folder   = "#{name}-#{sha}"
     metadata = File.join(folder, 'metadata.rb')
 
-    create_directory(folder)
+    create_dir(folder)
     write_file(metadata, [
       "name '#{name}'",
       "version '#{version}'"

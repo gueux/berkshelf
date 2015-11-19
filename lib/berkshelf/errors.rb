@@ -321,13 +321,12 @@ module Berkshelf
   class UnknownCompressionType < BerkshelfError
     set_status_code(131)
 
-    def initialize(target, destination)
-      @target = target
+    def initialize(destination)
       @destination = destination
     end
 
     def to_s
-      "The file at '#{@target}' is not a known compression type, and cannot be decompressed into '#{@destination}'"
+      "The file at '#{@destination}' is not a known compression type"
     end
 
     alias_method :message, :to_s
